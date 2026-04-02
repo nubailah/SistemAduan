@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+<title>Sistem Aduan Pelajar</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h2>Dashboard Aduan</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Nama</th>
-      <th>ID</th>
-      <th>Kategori</th>
-      <th>Aduan</th>
-      <th>Status</th>
-      <th>Response</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody id="dataTable"></tbody>
-</table>
+
+<h2>Login Pelajar</h2>
+<form id="loginForm">
+<input type="email" id="email" placeholder="Email" required><br>
+<input type="password" id="password" placeholder="Password" required><br>
+<button type="submit">Login</button>
+</form>
+
+<div id="aduanSection" style="display:none;">
+<h2>Hantar Aduan</h2>
+<form id="aduanForm">
+<input type="text" id="nama" placeholder="Nama" required><br>
+<input type="text" id="id" placeholder="ID Pelajar" required><br>
+<select id="kategori">
+<option>Kelas</option>
+<option>Akademik</option>
+<option>Pensyarah</option>
+</select><br>
+<textarea id="aduan" placeholder="Tulis aduan" required></textarea><br>
+<button type="submit">Hantar</button>
+</form>
+<p id="msg"></p>
+</div>
+
 <script type="module" src="script.js"></script>
 </body>
 </html>
