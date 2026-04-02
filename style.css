@@ -1,0 +1,22 @@
+body {
+  font-family: Arial;
+  padding: 20px;
+}
+
+input, textarea, select {
+  width: 300px;
+  padding: 8px;
+  margin: 5px 0;
+}
+
+button {
+  padding: 8px 15px;
+  background: green;
+  color: white;
+  border: none;
+}
+
+table {
+  margin-top: 20px;
+  width: 100%;
+}
