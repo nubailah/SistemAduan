@@ -5,27 +5,19 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <h2>Hantar Aduan</h2>
-
 <form id="aduanForm">
-  <input type="text" id="nama" placeholder="Nama"><br>
-  <input type="text" id="id" placeholder="ID Pelajar"><br>
-
+  <input type="text" id="nama" placeholder="Nama" required><br>
+  <input type="text" id="id" placeholder="ID Pelajar" required><br>
   <select id="kategori">
     <option>Kelas</option>
     <option>Akademik</option>
     <option>Pensyarah</option>
   </select><br>
-
-  <textarea id="aduan" placeholder="Tulis aduan"></textarea><br>
-
+  <textarea id="aduan" placeholder="Tulis aduan" required></textarea><br>
   <button type="submit">Hantar</button>
 </form>
-
 <p id="msg"></p>
-
 <script type="module" src="script.js"></script>
-
 </body>
 </html>
