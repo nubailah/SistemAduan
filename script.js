@@ -1,33 +1,38 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-const firebaseConfig = { /* paste config sini */ };
-apiKey: "AIzaSyCWK-Z2WtsiLXkDDwjDat4yG29Ziw97-no",
+// Ganti config awak sendiri
+const firebaseConfig = {
+ apiKey: "AIzaSyCWK-Z2WtsiLXkDDwjDat4yG29Ziw97-no",
   authDomain: "sistem-aduan-31d8c.firebaseapp.com",
   projectId: "sistem-aduan-31d8c",
   storageBucket: "sistem-aduan-31d8c.firebasestorage.app",
   messagingSenderId: "611315545250",
   appId: "1:611315545250:web:5720794633d1339614d3fb",
   measurementId: "G-0SPGBTZJV5"
+};
 
-// ====== LOGIN ======
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+// ===== LOGIN =====
 const loginForm = document.getElementById("loginForm");
 if(loginForm){
-loginForm.addEventListener("submit", async e=>{
-  e.preventDefault();
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  try{
-    const userCred = await signInWithEmailAndPassword(auth,email,password);
-    document.getElementById("loginForm").style.display="none";
-    document.getElementById("aduanSection").style.display="block";
-    console.log("Login berjaya",userCred.user.email);
-  }catch(err){alert(err.message);}
-});
+  loginForm.addEventListener("submit", async e=>{
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    try{
+      await signInWithEmailAndPassword(auth,email,password);
+      document.getElementById("loginForm").style.display="none";
+      document.getElementById("aduanSection").style.display="block";
+    }catch(err){alert(err.message);}
+  });
 }
 
-// ====== SUBMIT ADUAN ======
+// ===== SUBMIT ADUAN =====
 const aduanForm = document.getElementById("aduanForm");
 if(aduanForm){
   aduanForm.addEventListener("submit", async e=>{
@@ -46,7 +51,7 @@ if(aduanForm){
   });
 }
 
-// ====== LOAD ADMIN DASHBOARD ======
+// ===== LOAD ADMIN DASHBOARD =====
 const table = document.getElementById("dataTable");
 if(table){
   loadData();
@@ -56,27 +61,29 @@ async function loadData(){
   table.innerHTML="";
   querySnapshot.forEach(docSnap=>{
     const d=docSnap.data();
+    let color = d.status==="BARU" ? "red" : d.status==="DALAM PROSES" ? "orange" : "green";
     table.innerHTML+=`
 <tr>
 <td>${d.nama}</td>
 <td>${d.id}</td>
 <td>${d.kategori}</td>
 <td>${d.aduan}</td>
+<td style="color:${color}">${d.status}</td>
+<td><input type="text" id="resp-${docSnap.id}" value="${d.response}" placeholder="Tulis response"></td>
 <td>
 <select id="status-${docSnap.id}">
 <option ${d.status==="BARU"?"selected":""}>BARU</option>
 <option ${d.status==="DALAM PROSES"?"selected":""}>DALAM PROSES</option>
 <option ${d.status==="SELESAI"?"selected":""}>SELESAI</option>
 </select>
+<button onclick="updateAduan('${docSnap.id}')">Update</button>
 </td>
-<td><input type="text" id="resp-${docSnap.id}" value="${d.response}" placeholder="Tulis response"></td>
-<td><button onclick="updateAduan('${docSnap.id}')">Update</button></td>
 </tr>
     `;
   });
 }
 
-// ====== UPDATE STATUS + RESPONSE ======
+// ===== UPDATE STATUS + RESPONSE =====
 window.updateAduan = async function(id){
   const ref = doc(db,"aduan",id);
   const status = document.getElementById(`status-${id}`).value;
@@ -84,6 +91,8 @@ window.updateAduan = async function(id){
   await updateDoc(ref,{status: status,response: response});
   loadData();
 }
+
+
 
 
 
